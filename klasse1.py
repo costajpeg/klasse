@@ -4,7 +4,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
-# --- Classe de Botões ---
 class BotaoPersonalizado(tk.Button):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
@@ -14,7 +13,6 @@ class BotaoPersonalizado(tk.Button):
             height=1, width=20
         )
 
-# --- CLASSE BASE PARA AS TELAS ---
 class TelaBase(tk.Frame):
     def __init__(self, master, titulo_texto, **kwargs):
         super().__init__(master, bg="#FFFFFF", **kwargs)
@@ -24,17 +22,15 @@ class TelaBase(tk.Frame):
                                command=master.mostrar_menu, bg="#757575", fg="white", relief=tk.FLAT)
         btn_voltar.pack(pady=10)
 
-# --- CLASSE DA JANELA PRINCIPAL (Centraliza o Banco de Dados) ---
 class Aplicativo(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Gerenciador Escolar")
-        self.geometry("1000x700") # Ajustado para visualização confortável, mude para 1920x1080 se preferir
+        self.geometry("1000x700")
         self.configure(bg="#F5F5F5")
         
-        # 💾 BANCO DE DADOS TEMPORÁRIO (Acessível por todas as telas)
         self.dados_alunos = [] 
-        self.dados_professores = [] # 👉 CORREÇÃO 1: Faltava inicializar esta lista aqui
+        self.dados_professores = []
         self.series_predefinidas = ["1º Ano", "2º Ano", "3º Ano", "4º Ano", "5º Ano"]
         
         self.tela_atual = None
@@ -81,32 +77,26 @@ class Aplicativo(tk.Tk):
             
         self.tela_atual.pack(fill="both", expand=True)
 
-# --- TELA 1: Cadastro de Alunos Dividida ao Meio (Lado a Lado) ---
+#TELA 1
 class TelaCadastroAlunos(tk.Frame):
     def __init__(self, master):
         super().__init__(master, bg="#FFFFFF")
         self.master = master
         
-        # 1. Título Geral no Topo da Tela
         lbl_titulo = tk.Label(self, text="Painel de Cadastro de Alunos", font=("Arial", 18, "bold"), bg="#FFFFFF")
         lbl_titulo.pack(pady=20)
 
-        # Container principal para segurar os dois lados
         container_divisao = tk.Frame(self, bg="#FFFFFF")
         container_divisao.pack(fill="both", expand=True, padx=40)
 
-        # Configura as colunas do container para dividirem o espaço igualmente (50% para cada lado)
         container_divisao.columnconfigure(0, weight=1)
         container_divisao.columnconfigure(1, weight=1)
         container_divisao.rowconfigure(0, weight=1)
 
-        # ==========================================
-        # ⬅️ LADO ESQUERDO: Formulário de Cadastro
-        # ==========================================
+        #LADO ESQUERDO
         lado_esquerdo = tk.LabelFrame(container_divisao, text=" Novo Cadastro ", font=("Arial", 12, "bold"), bg="#FFFFFF", padx=20, pady=20)
         lado_esquerdo.grid(row=0, column=0, sticky="nsew", padx=(0, 20)) # Margem apenas na direita para separar as metades
 
-        # Alinhando os elementos verticalmente dentro do formulário
         tk.Label(lado_esquerdo, text="Nome do Aluno:", bg="#FFFFFF", font=("Arial", 11)).pack(anchor="w", pady=(10, 2))
         self.txt_nome = tk.Entry(lado_esquerdo, font=("Arial", 11), width=35)
         self.txt_nome.pack(fill="x", pady=(0, 15))
@@ -119,9 +109,7 @@ class TelaCadastroAlunos(tk.Frame):
         btn_salvar = tk.Button(lado_esquerdo, text="➕ Adicionar Aluno", command=self.adicionar_aluno, bg="#4CAF50", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), height=2)
         btn_salvar.pack(fill="x")
 
-        # ==========================================
-        # ➡️ LADO DIREITO: Tabela de Alunos Cadastrados
-        # ==========================================
+        #LADO DIREITO
         lado_direito = tk.LabelFrame(container_divisao, text=" Alunos Registrados ", font=("Arial", 12, "bold"), bg="#FFFFFF", padx=20, pady=20)
         lado_direito.grid(row=0, column=1, sticky="nsew", padx=(20, 0))
 
@@ -135,16 +123,12 @@ class TelaCadastroAlunos(tk.Frame):
         self.tabela.column("nome", width=250, minwidth=150, anchor="w")
         self.tabela.column("serie", width=100, minwidth=100, anchor="center")
         
-        # Coloca a tabela preenchendo o lado direito
         self.tabela.pack(fill="both", expand=True)
 
-        # Carrega os alunos que já foram salvos anteriormente
         for aluno in self.master.dados_alunos:
             self.tabela.insert("", "end", values=(aluno["id"], aluno["nome"], aluno["serie"]))
 
-        # ==========================================
-        # 🔘 BOTÃO VOLTAR (Fica centralizado no rodapé da página)
-        # ==========================================
+        #BOTAO VOLTAR
         btn_voltar = tk.Button(self, text="← Voltar ao Menu Principal", font=("Arial", 11), command=master.mostrar_menu, bg="#757575", fg="white", relief=tk.FLAT, width=25, height=1)
         btn_voltar.pack(pady=25)
 
@@ -160,32 +144,26 @@ class TelaCadastroAlunos(tk.Frame):
         else:
             messagebox.showwarning("Aviso", "Por favor, digite o nome do aluno.")
 
-# --- TELA 2: Cadastro de Professores Dividida ao Meio (Lado a Lado) ---
+#TELA 2
 class TelaCadastroProfessores(tk.Frame):
     def __init__(self, master):
         super().__init__(master, bg="#FFFFFF")
         self.master = master
         
-        # 1. Título Geral no Topo da Tela
         lbl_titulo = tk.Label(self, text="Painel de Cadastro de Professores", font=("Arial", 18, "bold"), bg="#FFFFFF")
         lbl_titulo.pack(pady=20)
 
-        # Container principal para segurar os dois lados
         container_divisao = tk.Frame(self, bg="#FFFFFF")
         container_divisao.pack(fill="both", expand=True, padx=40)
 
-        # Configura as colunas do container para dividirem o espaço igualmente (50% para cada lado)
         container_divisao.columnconfigure(0, weight=1)
         container_divisao.columnconfigure(1, weight=1)
         container_divisao.rowconfigure(0, weight=1)
 
-        # ==========================================
-        # ⬅️ LADO ESQUERDO: Formulário de Cadastro
-        # ==========================================
+        #LADO ESQUERDO
         lado_esquerdo = tk.LabelFrame(container_divisao, text=" Novo Cadastro de Professor", font=("Arial", 12, "bold"), bg="#FFFFFF", padx=20, pady=20)
         lado_esquerdo.grid(row=0, column=0, sticky="nsew", padx=(0, 20)) 
 
-        # Alinhando os elementos verticalmente dentro do formulário
         tk.Label(lado_esquerdo, text="Nome completo:", bg="#FFFFFF", font=("Arial", 11)).pack(anchor="w", pady=(10, 2))
         self.txt_nome = tk.Entry(lado_esquerdo, font=("Arial", 11), width=35)
         self.txt_nome.pack(fill="x", pady=(0, 15))
@@ -201,9 +179,7 @@ class TelaCadastroProfessores(tk.Frame):
         btn_salvar = tk.Button(lado_esquerdo, text="➕ Adicionar Professor", command=self.adicionar_professor, bg="#4CAF50", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), height=2)
         btn_salvar.pack(fill="x")
 
-        # ==========================================
-        # ➡️ LADO DIREITO: Tabela de Professores Cadastrados
-        # ==========================================
+        #LADO DIREITO
         lado_direito = tk.LabelFrame(container_divisao, text=" Professores cadastrados ", font=("Arial", 12, "bold"), bg="#FFFFFF", padx=20, pady=20)
         lado_direito.grid(row=0, column=1, sticky="nsew", padx=(20, 0))
 
@@ -221,32 +197,25 @@ class TelaCadastroProfessores(tk.Frame):
         
         self.tabela.pack(fill="both", expand=True)
 
-        # Carrega os professores que já foram salvos anteriormente
-        for professor in self.master.dados_professores: # 👉 CORREÇÃO: nome da lista corrigido
+        for professor in self.master.dados_professores:
             self.tabela.insert("", "end", values=(professor["id"], professor["nome"], professor["matricula"], professor["email"])) # 👉 CORREÇÃO: "professor" com 'r'
 
-        # ==========================================
-        # 🔘 BOTÃO VOLTAR
-        # ==========================================
         btn_voltar = tk.Button(self, text="← Voltar ao Menu Principal", font=("Arial", 11), command=master.mostrar_menu, bg="#757575", fg="white", relief=tk.FLAT, width=25, height=1)
         btn_voltar.pack(pady=25)
 
     def adicionar_professor(self):
-        # 👉 CORREÇÃO: Buscando os valores corretos dos 3 campos
         nome = self.txt_nome.get().strip()
         matricula = self.txt_matricula.get().strip()
         email = self.txt_email.get().strip()
 
         if nome and matricula and email:
-            novo_id = len(self.master.dados_professores) + 1 # 👉 CORREÇÃO: Nome corrigido da lista global
+            novo_id = len(self.master.dados_professores) + 1 
             
-            # Salva na lista global da janela principal
             self.master.dados_professores.append({"id": novo_id, "nome": nome, "matricula": matricula, "email": email})
             
-            # Insere visualmente na tabela
             self.tabela.insert("", "end", values=(novo_id, nome, matricula, email))
             
-            # Limpa todos os campos para o próximo cadastro
+
             self.txt_nome.delete(0, tk.END)
             self.txt_matricula.delete(0, tk.END)
             self.txt_email.delete(0, tk.END)
@@ -254,7 +223,7 @@ class TelaCadastroProfessores(tk.Frame):
             messagebox.showwarning("Aviso", "Por favor, preencha todos os campos do professor.")
 
 
-# --- TELA 2: Sorteio Dinâmico sem Repetição com Vários Professores ---
+#TELA 3
 class TelaSorteio(tk.Frame):
     def __init__(self, master):
         super().__init__(master, bg="#FFFFFF")
@@ -262,7 +231,6 @@ class TelaSorteio(tk.Frame):
 
         tk.Label(self, text="Sorteador de Turmas", font=("Arial", 16, "bold"), bg="#FFFFFF").pack(pady=15)
 
-        # Container principal para as configurações (usando grid para organizar os blocos)
         frame_config = tk.Frame(self, bg="#FFFFFF")
         frame_config.pack(pady=10, padx=20, fill="x")
         
@@ -270,7 +238,6 @@ class TelaSorteio(tk.Frame):
         frame_config.columnconfigure(1, weight=1)
         frame_config.columnconfigure(2, weight=1)
 
-        # 1️⃣ BLOCO DA SÉRIE (Coluna 0)
         bloco_serie = tk.Frame(frame_config, bg="#FFFFFF")
         bloco_serie.grid(row=0, column=0, sticky="n", padx=10)
         
@@ -279,28 +246,23 @@ class TelaSorteio(tk.Frame):
         self.cb_serie_sorteio.pack(fill="x", pady=5)
         self.cb_serie_sorteio.current(0)
 
-        # 2️⃣ BLOCO DA QUANTIDADE DE TURMAS (Abaixo do bloco da série)
         tk.Label(bloco_serie, text="2. Dividir em quantas turmas?", font=("Arial", 10, "bold"), bg="#FFFFFF").pack(anchor="w", pady=(15, 2))
         self.txt_qtd_turmas = tk.Entry(bloco_serie, width=5, font=("Arial", 10))
         self.txt_qtd_turmas.insert(0, "2") 
         self.txt_qtd_turmas.pack(anchor="w", pady=5)
 
-        # 3️⃣ BLOCO DOS PROFESSORES (Coluna 1)
         bloco_prof = tk.Frame(frame_config, bg="#FFFFFF")
         bloco_prof.grid(row=0, column=1, sticky="n", padx=10)
         
         tk.Label(bloco_prof, text="3. Selecione os Professores (Ctrl+Clique):", font=("Arial", 10, "bold"), bg="#FFFFFF").pack(anchor="w", pady=2)
         
-        # selectmode="multiple" permite escolher vários professores
         self.listbox_professores = tk.Listbox(bloco_prof, selectmode="multiple", height=5, width=30, font=("Arial", 10))
         self.listbox_professores.pack(side="left", fill="both", expand=True)
         
-        # Barra de rolagem para a lista de professores se houverem muitos
         scrollbar = tk.Scrollbar(bloco_prof, orient="vertical", command=self.listbox_professores.yview)
         scrollbar.pack(side="right", fill="y")
         self.listbox_professores.config(yscrollcommand=scrollbar.set)
 
-        # Carrega os professores cadastrados na Listbox
         nomes_professores = [prof["nome"] for prof in self.master.dados_professores]
         if not nomes_professores:
             self.listbox_professores.insert(tk.END, "Nenhum professor cadastrado")
@@ -309,15 +271,12 @@ class TelaSorteio(tk.Frame):
             for nome in nomes_professores:
                 self.listbox_professores.insert(tk.END, nome)
 
-        # 4️⃣ BLOCO DO BOTÃO (Coluna 2)
         bloco_botao = tk.Frame(frame_config, bg="#FFFFFF")
         bloco_botao.grid(row=0, column=2, padx=10)
         
-        # 👉 CORREÇÃO: Trocado 'padding=10' por 'padx=10, pady=5' para aceitar propriedades padrão do tk.Button
         btn_sortear = tk.Button(bloco_botao, text="🎲 Realizar Sorteio", command=self.realizar_sorteio, bg="#FF9800", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), padx=10, pady=5)
         btn_sortear.pack()
 
-        # Caixa de texto grande para exibir o resultado do sorteio
         self.txt_resultado = tk.Text(self, width=60, height=15, font=("Arial", 11), relief=tk.SOLID, borderwidth=1)
         self.txt_resultado.pack(pady=15, padx=20, fill="both", expand=True)
 
@@ -365,8 +324,9 @@ class TelaSorteio(tk.Frame):
         self.txt_resultado.insert(tk.END, "\n" + "="*60 + "\n\n")
         
         letras_turmas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
         for idx, lista_alunos in enumerate(turmas_resultado):
-            nome_turma = f"Turma {letras_turmas[idx % 26]}"
+            nome_turma = f"Turma {serie_alvo} {letras_turmas[idx % 26]}"
             prof_da_turma = professores_selecionados[idx % len(professores_selecionados)]
             
             self.txt_resultado.insert(tk.END, f"📌 {nome_turma} ({len(lista_alunos)} alunos)\n")
@@ -383,83 +343,3 @@ class TelaSorteio(tk.Frame):
 if __name__ == "__main__":
     app = Aplicativo()
     app.mainloop()
-
-
-
-'''class BotaoPersonalizado(tk.Button):
-    def __init__(self, master=None, **kwargs):
-        super().__init__(master, **kwargs)
-        self.config(
-            font=("Arial", 12, "bold"),
-            bg="#D0AD75",      # Cor de fundo
-            fg="#98613C",
-            relief=tk.FLAT,
-            activebackground="#1976D2",
-            activeforeground="white"
-        )
-
-# --- Funções para abrir as novas telas ---
-
-def abrir_tela_sorteio():
-    # Toplevel cria uma nova janela independente
-    tela = tk.Toplevel(janela)
-    tela.title("Sorteio de Turmas")
-    tela.geometry("400x300")
-    
-    # Conteúdo da tela
-    label = tk.Label(tela, text="Painel de Sorteio", font=("Arial", 16))
-    label.pack(pady=50)
-
-def abrir_tela_turmas():
-    tela = tk.Toplevel(janela)
-    tela.title("Gerenciar Turmas")
-    tela.geometry("400x300")
-    
-    label = tk.Label(tela, text="Lista de Turmas", font=("Arial", 16))
-    label.pack(pady=50)
-
-def abrir_tela_alunos():
-    tela = tk.Toplevel(janela)
-    tela.title("Cadastro de Alunos")
-    tela.geometry("1920x1080")
-    
-    label = tk.Label(tela, text="Painel do Aluno", font=("Arial", 16))
-    label.pack(pady=50)
-
-def abrir_tela_professores():
-    tela = tk.Toplevel(janela)
-    tela.title("Cadastro de Professores")
-    tela.geometry("400x300")
-    
-    label = tk.Label(tela, text="Painel do Professor", font=("Arial", 16))
-    label.pack(pady=50)
-
-# --- Configuração da Janela Principal ---
-janela = tk.Tk()
-janela.title("Gerenciador Escolar")
-janela.geometry("500x400")
-janela.configure(bg="#F5F5F5")
-
-# Configuração da grade (grid)
-janela.rowconfigure(0, weight=1)
-janela.rowconfigure(1, weight=1)
-janela.columnconfigure(0, weight=1)
-janela.columnconfigure(1, weight=1)
-
-# --- Criação dos Botões apontando para as funções ---
-b1 = BotaoPersonalizado(janela, text="Sortear Turmas", command=abrir_tela_sorteio)
-b1.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
-
-b2 = BotaoPersonalizado(janela, text="Turmas", command=abrir_tela_turmas)
-b2.grid(row=0, column=1, sticky="nsew", padx=20, pady=20)
-
-b3 = BotaoPersonalizado(janela, text="Alunos", command=abrir_tela_alunos)
-b3.grid(row=1, column=0, sticky="nsew", padx=20, pady=20)
-
-b4 = BotaoPersonalizado(janela, text="Professores", command=abrir_tela_professores)
-b4.grid(row=1, column=1, sticky="nsew", padx=20, pady=20)
-
-janela.mainloop()
-'''
-
-
