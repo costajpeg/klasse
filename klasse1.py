@@ -31,8 +31,9 @@ class Aplicativo(tk.Tk):
         
         self.dados_alunos = [] 
         self.dados_professores = []
-        self.series_predefinidas = ["1º Ano", "2º Ano", "3º Ano", "4º Ano", "5º Ano"]
-        
+        self.series_predefinidas = ["1º Ano", "2º Ano", "3º Ano", "4º Ano", "5º Ano", "6º Ano", "7º Ano", "8º Ano", "9º Ano"]
+        self.dados_turmas = []
+
         self.tela_atual = None
         self.mostrar_menu()
 
@@ -50,7 +51,7 @@ class Aplicativo(tk.Tk):
         b1 = BotaoPersonalizado(self.tela_atual, text="Sortear Turmas", command=lambda: self.mudar_tela("Sorteio de Turmas"))
         b1.grid(row=0, column=0, sticky="", padx=2, pady=(100, 1))
 
-        b2 = BotaoPersonalizado(self.tela_atual, text="Turmas", command=lambda: self.mudar_tela("Gerenciar Turmas"))
+        b2 = BotaoPersonalizado(self.tela_atual, text="Turmas", command=lambda: self.mudar_tela("Turmas cadastradas"))
         b2.grid(row=1, column=0, sticky="", padx=2, pady=1)
 
         b3 = BotaoPersonalizado(self.tela_atual, text="Alunos", command=lambda: self.mudar_tela("Cadastro de Alunos"))
@@ -70,6 +71,8 @@ class Aplicativo(tk.Tk):
             self.tela_atual = TelaCadastroAlunos(self)
         elif titulo_nova_tela == "Cadastro de Professores":
             self.tela_atual = TelaCadastroProfessores(self)
+        elif titulo_nova_tela == "Turmas cadastradas":
+            self.tela_atual = TelaTurmas(self)
         elif titulo_nova_tela == "Sorteio de Turmas":
             self.tela_atual = TelaSorteio(self)
         else:
@@ -254,7 +257,7 @@ class TelaSorteio(tk.Frame):
         bloco_prof = tk.Frame(frame_config, bg="#FFFFFF")
         bloco_prof.grid(row=0, column=1, sticky="n", padx=10)
         
-        tk.Label(bloco_prof, text="3. Selecione os Professores (Ctrl+Clique):", font=("Arial", 10, "bold"), bg="#FFFFFF").pack(anchor="w", pady=2)
+        tk.Label(bloco_prof, text="3. Selecione os Professores:", font=("Arial", 10, "bold"), bg="#FFFFFF").pack(anchor="w", pady=2)
         
         self.listbox_professores = tk.Listbox(bloco_prof, selectmode="multiple", height=5, width=30, font=("Arial", 10))
         self.listbox_professores.pack(side="left", fill="both", expand=True)
@@ -274,7 +277,7 @@ class TelaSorteio(tk.Frame):
         bloco_botao = tk.Frame(frame_config, bg="#FFFFFF")
         bloco_botao.grid(row=0, column=2, padx=10)
         
-        btn_sortear = tk.Button(bloco_botao, text="🎲 Realizar Sorteio", command=self.realizar_sorteio, bg="#FF9800", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), padx=10, pady=5)
+        btn_sortear = tk.Button(bloco_botao, text="Realizar Sorteio", command=self.realizar_sorteio, bg="#FF9800", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), padx=10, pady=5)
         btn_sortear.pack()
 
         self.txt_resultado = tk.Text(self, width=60, height=15, font=("Arial", 11), relief=tk.SOLID, borderwidth=1)
@@ -325,20 +328,51 @@ class TelaSorteio(tk.Frame):
         
         letras_turmas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+        self.master.dados_turmas.clear()
         for idx, lista_alunos in enumerate(turmas_resultado):
             nome_turma = f"Turma {serie_alvo} {letras_turmas[idx % 26]}"
             prof_da_turma = professores_selecionados[idx % len(professores_selecionados)]
             
+
             self.txt_resultado.insert(tk.END, f"📌 {nome_turma} ({len(lista_alunos)} alunos)\n")
             self.txt_resultado.insert(tk.END, f"👨‍🏫 Professor Regente: {prof_da_turma}\n")
             self.txt_resultado.insert(tk.END, f"  Integrantes:\n")
             
+            turma = {"nome": nome_turma, "serie": serie_alvo, "professor": prof_da_turma, "alunos": lista_alunos}
+            self.master.dados_turmas.append(turma)
+
             if not lista_alunos:
                 self.txt_resultado.insert(tk.END, "  (Nenhum aluno nesta turma)\n")
             for aluno in lista_alunos:
                 self.txt_resultado.insert(tk.END, f"  - {aluno}\n")
             self.txt_resultado.insert(tk.END, "\n" + "-"*40 + "\n\n")
 
+class TelaTurmas(tk.Frame):
+    def __init__(self, master):
+        super().__init__(master, bg="#FFFFFF")
+        self.master = master
+
+        tk.Label(self, text= "Turmas", font=("Arial", 18, "bold"), bg="#FFFFFF").pack(pady=20)
+
+        txt = tk.Text(self, font=("Arial", 11))
+        txt.pack(fill="both", expand=True, padx=20, pady=20)
+    
+        if not master.dados_turmas:
+            txt.insert(tk.END, "Nenhuma turma foi sorteada ainda.")
+
+        else:
+            for turma in master.dados_turmas:
+                txt.insert(tk.END, f"{turma['nome']}\n")
+                txt.insert(tk.END, f"Professor: {turma['professor']}\n")
+                txt.insert(tk.END, "Alunos: \n\n")
+
+                for aluno in turma["alunos"]:
+                    txt.insert(tk.END, f" - {aluno}\n\n")
+
+                txt.insert(tk.END, "\n" + "-"*40 + "\n\n")
+
+        btn_voltar = tk.Button(self, text="← Voltar", command=master.mostrar_menu)
+        btn_voltar.pack(pady=10)
 
 if __name__ == "__main__":
     app = Aplicativo()
