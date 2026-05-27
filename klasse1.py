@@ -7,11 +7,7 @@ from tkinter import messagebox
 class BotaoPersonalizado(tk.Button):
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
-        self.config(
-            font=("Arial", 12, "bold"), bg="#2196F3", fg="white",
-            relief=tk.GROOVE, activebackground="#1976D2", activeforeground="white",
-            height=1, width=20
-        )
+        self.config(font=("Arial", 12, "bold"), bg="#2196F3", fg="white", relief=tk.GROOVE, activebackground="#1976D2", activeforeground="white", height=1, width=20)
 
 class TelaBase(tk.Frame):
     def __init__(self, master, titulo_texto, **kwargs):
@@ -48,16 +44,16 @@ class Aplicativo(tk.Tk):
             self.tela_atual.rowconfigure(i, weight=1)
         self.tela_atual.columnconfigure(0, weight=1)
 
-        b1 = BotaoPersonalizado(self.tela_atual, text="Sortear Turmas", command=lambda: self.mudar_tela("Sorteio de Turmas"))
+        b1 = BotaoPersonalizado(self.tela_atual, text="Professores", command=lambda: self.mudar_tela("Cadastro de Professores"))
         b1.grid(row=0, column=0, sticky="", padx=2, pady=(100, 1))
 
-        b2 = BotaoPersonalizado(self.tela_atual, text="Turmas", command=lambda: self.mudar_tela("Turmas cadastradas"))
+        b2 = BotaoPersonalizado(self.tela_atual, text="Alunos", command=lambda: self.mudar_tela("Cadastro de Alunos"))
         b2.grid(row=1, column=0, sticky="", padx=2, pady=1)
 
-        b3 = BotaoPersonalizado(self.tela_atual, text="Alunos", command=lambda: self.mudar_tela("Cadastro de Alunos"))
+        b3 = BotaoPersonalizado(self.tela_atual, text="Turmas", command=lambda: self.mudar_tela("Turmas cadastradas"))
         b3.grid(row=2, column=0, sticky="", padx=2, pady=1)
 
-        b4 = BotaoPersonalizado(self.tela_atual, text="Professores", command=lambda: self.mudar_tela("Cadastro de Professores"))
+        b4 = BotaoPersonalizado(self.tela_atual, text="Sortear Turmas", command=lambda: self.mudar_tela("Sorteio de Turmas"))
         b4.grid(row=3, column=0, sticky="", padx=2, pady=1)
 
         b5 = BotaoPersonalizado(self.tela_atual, text="Sair", command=self.destroy)
@@ -67,10 +63,10 @@ class Aplicativo(tk.Tk):
         if self.tela_atual:
             self.tela_atual.destroy()
             
-        if titulo_nova_tela == "Cadastro de Alunos":
-            self.tela_atual = TelaCadastroAlunos(self)
-        elif titulo_nova_tela == "Cadastro de Professores":
+        if titulo_nova_tela == "Cadastro de Professores":
             self.tela_atual = TelaCadastroProfessores(self)
+        elif titulo_nova_tela == "Cadastro de Alunos":
+            self.tela_atual = TelaCadastroAlunos(self)
         elif titulo_nova_tela == "Turmas cadastradas":
             self.tela_atual = TelaTurmas(self)
         elif titulo_nova_tela == "Sorteio de Turmas":
@@ -109,7 +105,7 @@ class TelaCadastroAlunos(tk.Frame):
         self.cb_serie.pack(fill="x", pady=(0, 25))
         self.cb_serie.current(0)
 
-        btn_salvar = tk.Button(lado_esquerdo, text="➕ Adicionar Aluno", command=self.adicionar_aluno, bg="#4CAF50", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), height=2)
+        btn_salvar = tk.Button(lado_esquerdo, text="Adicionar Aluno", command=self.adicionar_aluno, bg="#4CAF50", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), height=2)
         btn_salvar.pack(fill="x")
 
         #LADO DIREITO
@@ -179,11 +175,11 @@ class TelaCadastroProfessores(tk.Frame):
         self.txt_email = tk.Entry(lado_esquerdo, font=("Arial", 11), width=35) # 👉 CORREÇÃO: Nome corrigido
         self.txt_email.pack(fill="x", pady=(0, 15))
 
-        btn_salvar = tk.Button(lado_esquerdo, text="➕ Adicionar Professor", command=self.adicionar_professor, bg="#4CAF50", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), height=2)
+        btn_salvar = tk.Button(lado_esquerdo, text="Adicionar Professor", command=self.adicionar_professor, bg="#4CAF50", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), height=2)
         btn_salvar.pack(fill="x")
 
         #LADO DIREITO
-        lado_direito = tk.LabelFrame(container_divisao, text=" Professores cadastrados ", font=("Arial", 12, "bold"), bg="#FFFFFF", padx=20, pady=20)
+        lado_direito = tk.LabelFrame(container_divisao, text="Professores cadastrados ", font=("Arial", 12, "bold"), bg="#FFFFFF", padx=20, pady=20)
         lado_direito.grid(row=0, column=1, sticky="nsew", padx=(20, 0))
 
         colunas = ("id", "nome", "matricula", "email")
@@ -364,10 +360,10 @@ class TelaTurmas(tk.Frame):
             for turma in master.dados_turmas:
                 txt.insert(tk.END, f"{turma['nome']}\n")
                 txt.insert(tk.END, f"Professor: {turma['professor']}\n")
-                txt.insert(tk.END, "Alunos: \n\n")
+                txt.insert(tk.END, "\nAlunos: \n\n")
 
                 for aluno in turma["alunos"]:
-                    txt.insert(tk.END, f" - {aluno}\n\n")
+                    txt.insert(tk.END, f" - {aluno}\n")
 
                 txt.insert(tk.END, "\n" + "-"*40 + "\n\n")
 
