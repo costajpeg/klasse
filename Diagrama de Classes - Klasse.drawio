@@ -1,0 +1,82 @@
+<mxfile host="app.diagrams.net" agent="ChatGPT">
+  <diagram name="Diagrama de Classes KLASSE" id="0">
+    <mxGraphModel dx="1911" dy="1033" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-11" edge="1" parent="1" source="2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-12" edge="1" parent="1" source="2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="&lt;b&gt;Pessoa&lt;/b&gt;&lt;div&gt;&lt;b&gt;(classe abstrata)&lt;br&gt;&lt;/b&gt;&amp;lt;&amp;gt;&lt;hr&gt;- __nome (atributo)&lt;hr&gt;+ mostrar_dados() (método)&lt;br&gt;+ get_nome() (método)&lt;br&gt;- __validar_nome() (método)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="160" width="260" x="580" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="&lt;b&gt;Aluno&lt;/b&gt;&lt;hr&gt;+ serie (atributo)&lt;hr&gt;+ mostrar_dados() (método)" vertex="1">
+          <mxGeometry height="120" width="220" x="380" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="4" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" value="&lt;b&gt;Professor&lt;/b&gt;&lt;hr&gt;+ matricula (atributo)&lt;hr&gt;+ mostrar_dados() (método)" vertex="1">
+          <mxGeometry height="120" width="220" x="820" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-13" edge="1" parent="1" source="5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.19;exitY=1.006;exitDx=0;exitDy=0;exitPerimeter=0;" target="8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-14" edge="1" parent="1" source="5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-15" edge="1" parent="1" source="5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-28" edge="1" parent="1" source="5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" value="&lt;b&gt;Aplicativo&lt;/b&gt;&lt;div&gt;&lt;b&gt;(classe principal)&lt;br&gt;&lt;/b&gt;&lt;hr&gt;+ dados_alunos&lt;br&gt;+ dados_professores&lt;br&gt;+ dados_turmas&lt;br&gt;+ series_predefinidas&lt;br&gt;+ tela_atual&lt;br&gt;&lt;hr&gt;métodos:&lt;/div&gt;&lt;div&gt;+ mostrar_menu()&lt;br&gt;+ mudar_tela()&lt;/div&gt;" vertex="1">
+          <mxGeometry height="220" width="300" x="560" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="6" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="&lt;b&gt;BotaoPersonalizado&lt;/b&gt;&lt;hr&gt;Herda de tk.Button" vertex="1">
+          <mxGeometry height="100" width="220" x="60" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="7" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" value="&lt;b&gt;TelaBase&lt;/b&gt;&lt;hr&gt;Herda de tk.Frame" vertex="1">
+          <mxGeometry height="100" width="220" x="60" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="8" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="&lt;b&gt;TelaCadastroAlunos&lt;/b&gt;&lt;hr&gt;+ adicionar_aluno() (método)" vertex="1">
+          <mxGeometry height="120" width="240" x="340" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="9" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" value="&lt;b&gt;TelaCadastroProfessores&lt;/b&gt;&lt;hr&gt;+ adicionar_professor() (método)" vertex="1">
+          <mxGeometry height="120" width="260" x="640" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="10" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" value="&lt;b&gt;TelaSorteio&lt;/b&gt;&lt;hr&gt;+ realizar_sorteio() (método)" vertex="1">
+          <mxGeometry height="120" width="240" x="960" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="11" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="&lt;b&gt;TelaTurmas&lt;/b&gt;" vertex="1">
+          <mxGeometry height="100" width="220" x="1260" y="820" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="classes filhas através da herança" vertex="1">
+          <mxGeometry height="60" width="120" x="650" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-24" edge="1" parent="1" source="AoYRbQKCilq0pgEhPqRh-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=none;endFill=0;" target="5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="controla toda a execução da aplicação e o gerenciamento das telas" vertex="1">
+          <mxGeometry height="60" width="150" x="390" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-25" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="responsável pelo cadastro de alunos" vertex="1">
+          <mxGeometry height="60" width="150" x="385" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-26" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="responsável pela lógica de divisão das turmas e pelo sorteio dos alunos entre elas" vertex="1">
+          <mxGeometry height="60" width="150" x="960" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-27" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="realiza o cadastro dos professores" vertex="1">
+          <mxGeometry height="60" width="150" x="600" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-29" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="turmas geradas" vertex="1">
+          <mxGeometry height="60" width="150" x="1260" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="AoYRbQKCilq0pgEhPqRh-31" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="A classe TelaBase funciona como estrutura padrão das telas, e a classe BotaoPersonalizado é utilizada para criar botões personalizados na interface" vertex="1">
+          <mxGeometry height="60" width="265" x="37.5" y="620" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
