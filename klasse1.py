@@ -42,7 +42,7 @@ class Professor(Pessoa): #classe com herança
         return f"Professor: {self.get_nome()} | Matrícula: {self.matricula}"
 
 class BotaoPersonalizado(tk.Button): #classe 1
-    def __init__(self, master=None, **kwargs):
+    def __init__(self, master=None, **kwargs): #kwargs keywords arguments recebe argumentos nomeados sem precisar declarar um de cada vez
         super().__init__(master, **kwargs)
         self.config(font=("Arial", 12, "bold"), bg="#2196F3", fg="white", relief=tk.GROOVE, activebackground="#1976D2", activeforeground="white", height=1, width=20)
 
@@ -58,6 +58,7 @@ class TelaBase(tk.Frame): #classe 2
         btn_voltar.pack(pady=10)
 
 class Aplicativo(tk.Tk): #classe 3 tk.Tk eh a janela principal
+#superclasse
     def __init__(self):
         super().__init__()
         self.title("KLASSE")
@@ -412,10 +413,7 @@ if __name__ == "__main__":
     aluno_teste = Aluno("Alice", "5º Ano")
     professor_teste = Professor("Antônio", "12345")
 
-    print(aluno_teste.mostrar_dados())
     print(aluno_teste.mostrar_dados("Aluno destaque")) #chamada de método
-
-    print(professor_teste.mostrar_dados())
     print(professor_teste.mostrar_dados("Professor homenageado")) #chamada de método
 
     app = Aplicativo()
