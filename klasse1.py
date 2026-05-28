@@ -5,6 +5,7 @@ from tkinter import ttk #biblioteca pra fazer a interface, mas eh "Themed", chei
 from tkinter import messagebox #para mensagens e alertas
 from abc import ABC, abstractmethod #biblioteca abstrata
 
+
 class Pessoa(ABC): #classe abstrata pois herda ABC
     def __init__(self, nome):
         self.__nome = nome #atributo privado
@@ -44,17 +45,17 @@ class Professor(Pessoa): #classe com herança
 class BotaoPersonalizado(tk.Button): #classe 1
     def __init__(self, master=None, **kwargs): #kwargs keywords arguments recebe argumentos nomeados sem precisar declarar um de cada vez
         super().__init__(master, **kwargs)
-        self.config(font=("Arial", 12, "bold"), bg="#2196F3", fg="white", relief=tk.GROOVE, activebackground="#1976D2", activeforeground="white", height=1, width=20)
+        self.config(font=("Segoe UI", 12, "bold"), bg="#6A3A2A", fg="white", relief=tk.GROOVE, activebackground="#6A3A2A", activeforeground="white", height=1, width=20)
 
 class TelaBase(tk.Frame): #classe 2
 #usamos tk.Frame para as telas, pois ele deixa com q agrupamos botoes, tabelas, textos, em uma msm janela
 #tk.Frame eh tipo uma "caixinha"/container
     def __init__(self, master, titulo_texto, **kwargs):
-        super().__init__(master, bg="#FFFFFF", **kwargs)
-        label = tk.Label(self, text=titulo_texto, font=("Arial", 18, "bold"), bg="#FFFFFF")
+        super().__init__(master, bg="#E6CCB6", **kwargs)
+        label = tk.Label(self, text=titulo_texto, font=("Segoe UI", 18, "bold"), bg="#E6CCB6")
         label.pack(pady=40)
-        btn_voltar = tk.Button(self, text="← Voltar ao Menu", font=("Arial", 10), 
-                               command=master.mostrar_menu, bg="#757575", fg="white", relief=tk.FLAT)
+        btn_voltar = tk.Button(self, text="← Voltar ao Menu", font=("Segoe UI", 10), 
+                               command=master.mostrar_menu, bg="#D2A27F", fg="white", relief=tk.FLAT)
         btn_voltar.pack(pady=10)
 
 class Aplicativo(tk.Tk): #classe 3 tk.Tk eh a janela principal
@@ -63,7 +64,7 @@ class Aplicativo(tk.Tk): #classe 3 tk.Tk eh a janela principal
         super().__init__()
         self.title("KLASSE")
         self.geometry("1000x700")
-        self.configure(bg="#F5F5F5")
+        self.configure(bg="#E6CCB6")
         
         self.dados_alunos = [] 
         self.dados_professores = []
@@ -77,7 +78,7 @@ class Aplicativo(tk.Tk): #classe 3 tk.Tk eh a janela principal
         if self.tela_atual:
             self.tela_atual.destroy()
             
-        self.tela_atual = tk.Frame(self, bg="#F5F5F5")
+        self.tela_atual = tk.Frame(self, bg="#E6CCB6")
         self.tela_atual.pack(fill="both", expand=True)
         
         for i in range(5):
@@ -118,13 +119,13 @@ class Aplicativo(tk.Tk): #classe 3 tk.Tk eh a janela principal
 
 class TelaCadastroAlunos(tk.Frame):  #classe 4
     def __init__(self, master): #master eh a janela principal
-        super().__init__(master, bg="#FFFFFF")
+        super().__init__(master, bg="#E6CCB6")
         self.master = master
         
-        lbl_titulo = tk.Label(self, text="Painel de Cadastro de Alunos", font=("Arial", 18, "bold"), bg="#FFFFFF")
+        lbl_titulo = tk.Label(self, text="Painel de Cadastro de Alunos", font=("Segoe UI", 18, "bold"), bg="#E6CCB6")
         lbl_titulo.pack(pady=20)
 
-        container_divisao = tk.Frame(self, bg="#FFFFFF")
+        container_divisao = tk.Frame(self, bg="#E6CCB6")
         container_divisao.pack(fill="both", expand=True, padx=40)
 
         container_divisao.columnconfigure(0, weight=1)
@@ -132,23 +133,23 @@ class TelaCadastroAlunos(tk.Frame):  #classe 4
         container_divisao.rowconfigure(0, weight=1)
 
         #LADO ESQUERDO
-        lado_esquerdo = tk.LabelFrame(container_divisao, text=" Novo Cadastro ", font=("Arial", 12, "bold"), bg="#FFFFFF", padx=20, pady=20)
+        lado_esquerdo = tk.LabelFrame(container_divisao, text=" Novo Cadastro ", font=("Segoe UI", 12, "bold"), bg="#E6CCB6", padx=20, pady=20)
         lado_esquerdo.grid(row=0, column=0, sticky="nsew", padx=(0, 20)) #margem apenas na direita para separar as metades
         #sticky define para qual direçao o componente ficara alinhado (north south east west)
-        tk.Label(lado_esquerdo, text="Nome do Aluno:", bg="#FFFFFF", font=("Arial", 11)).pack(anchor="w", pady=(10, 2))
-        self.txt_nome = tk.Entry(lado_esquerdo, font=("Arial", 11), width=35)
+        tk.Label(lado_esquerdo, text="Nome do Aluno:", bg="#E6CCB6", font=("Segoe UI", 11)).pack(anchor="w", pady=(10, 2))
+        self.txt_nome = tk.Entry(lado_esquerdo, font=("Segoe UI", 11), width=35)
         self.txt_nome.pack(fill="x", pady=(0, 15))
 
-        tk.Label(lado_esquerdo, text="Selecione a Série:", bg="#FFFFFF", font=("Arial", 11)).pack(anchor="w", pady=(0, 2))
-        self.cb_serie = ttk.Combobox(lado_esquerdo, values=self.master.series_predefinidas, font=("Arial", 11), state="readonly")
+        tk.Label(lado_esquerdo, text="Selecione a Série:", bg="#E6CCB6", font=("Segoe UI", 11)).pack(anchor="w", pady=(0, 2))
+        self.cb_serie = ttk.Combobox(lado_esquerdo, values=self.master.series_predefinidas, font=("Segoe UI", 11), state="readonly")
         self.cb_serie.pack(fill="x", pady=(0, 25))
         self.cb_serie.current(0)
 
-        btn_salvar = tk.Button(lado_esquerdo, text="Adicionar Aluno", command=self.adicionar_aluno, bg="#4CAF50", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), height=2)
+        btn_salvar = tk.Button(lado_esquerdo, text="Adicionar Aluno", command=self.adicionar_aluno, bg="#B06C4B", fg="white", relief=tk.FLAT, font=("Segoe UI", 11, "bold"), height=2)
         btn_salvar.pack(fill="x")
 
         #LADO DIREITO
-        lado_direito = tk.LabelFrame(container_divisao, text=" Alunos Registrados ", font=("Arial", 12, "bold"), bg="#FFFFFF", padx=20, pady=20)
+        lado_direito = tk.LabelFrame(container_divisao, text=" Alunos Registrados ", font=("Segoe UI", 12, "bold"), bg="#E6CCB6", padx=20, pady=20)
         lado_direito.grid(row=0, column=1, sticky="nsew", padx=(20, 0))
 
         colunas = ("id", "nome", "serie")
@@ -167,7 +168,7 @@ class TelaCadastroAlunos(tk.Frame):  #classe 4
             self.tabela.insert("", "end", values=(aluno["id"], aluno["nome"], aluno["serie"]))
 
         #BOTAO VOLTAR
-        btn_voltar = tk.Button(self, text="← Voltar ao Menu Principal", font=("Arial", 11), command=master.mostrar_menu, bg="#757575", fg="white", relief=tk.FLAT, width=25, height=1)
+        btn_voltar = tk.Button(self, text="← Voltar ao Menu Principal", font=("Segoe UI", 11), command=master.mostrar_menu, bg="#D2A27F", fg="white", relief=tk.FLAT, width=25, height=1)
         btn_voltar.pack(pady=25)
 
     def adicionar_aluno(self):
@@ -184,14 +185,14 @@ class TelaCadastroAlunos(tk.Frame):  #classe 4
 
 class TelaCadastroProfessores(tk.Frame):  #classe 5
     def __init__(self, master):
-        super().__init__(master, bg="#FFFFFF")
+        super().__init__(master, bg="#E6CCB6")
         self.master = master
         
-        lbl_titulo = tk.Label(self, text="Painel de Cadastro de Professores", font=("Arial", 18, "bold"), bg="#FFFFFF")
+        lbl_titulo = tk.Label(self, text="Painel de Cadastro de Professores", font=("Segoe UI", 18, "bold"), bg="#E6CCB6")
         #cria textos
         lbl_titulo.pack(pady=20)
 
-        container_divisao = tk.Frame(self, bg="#FFFFFF") #fazer a divisao de colunas
+        container_divisao = tk.Frame(self, bg="#E6CCB6") #fazer a divisao de colunas
         container_divisao.pack(fill="both", expand=True, padx=40)
 
         container_divisao.columnconfigure(0, weight=1)
@@ -199,26 +200,26 @@ class TelaCadastroProfessores(tk.Frame):  #classe 5
         container_divisao.rowconfigure(0, weight=1)
 
         #LADO ESQUERDO
-        lado_esquerdo = tk.LabelFrame(container_divisao, text=" Novo Cadastro de Professor", font=("Arial", 12, "bold"), bg="#FFFFFF", padx=20, pady=20)
+        lado_esquerdo = tk.LabelFrame(container_divisao, text=" Novo Cadastro de Professor", font=("Segoe UI", 12, "bold"), bg="#E6CCB6", padx=20, pady=20)
         lado_esquerdo.grid(row=0, column=0, sticky="nsew", padx=(0, 20)) 
 
-        tk.Label(lado_esquerdo, text="Nome completo:", bg="#FFFFFF", font=("Arial", 11)).pack(anchor="w", pady=(10, 2))
-        self.txt_nome = tk.Entry(lado_esquerdo, font=("Arial", 11), width=35)
+        tk.Label(lado_esquerdo, text="Nome completo:", bg="#E6CCB6", font=("Segoe UI", 11)).pack(anchor="w", pady=(10, 2))
+        self.txt_nome = tk.Entry(lado_esquerdo, font=("Segoe UI", 11), width=35)
         self.txt_nome.pack(fill="x", pady=(0, 15))
 
-        tk.Label(lado_esquerdo, text="Matrícula de funcionário:", bg="#FFFFFF", font=("Arial", 11)).pack(anchor="w", pady=(10, 2))
-        self.txt_matricula = tk.Entry(lado_esquerdo, font=("Arial", 11), width=35) # 👉 CORREÇÃO: Nome corrigido
+        tk.Label(lado_esquerdo, text="Matrícula de funcionário:", bg="#E6CCB6", font=("Segoe UI", 11)).pack(anchor="w", pady=(10, 2))
+        self.txt_matricula = tk.Entry(lado_esquerdo, font=("Segoe UI", 11), width=35) # 👉 CORREÇÃO: Nome corrigido
         self.txt_matricula.pack(fill="x", pady=(0, 15))
 
-        tk.Label(lado_esquerdo, text="E-mail:", bg="#FFFFFF", font=("Arial", 11)).pack(anchor="w", pady=(10, 2))
-        self.txt_email = tk.Entry(lado_esquerdo, font=("Arial", 11), width=35)
+        tk.Label(lado_esquerdo, text="E-mail:", bg="#E6CCB6", font=("Segoe UI", 11)).pack(anchor="w", pady=(10, 2))
+        self.txt_email = tk.Entry(lado_esquerdo, font=("Segoe UI", 11), width=35)
         self.txt_email.pack(fill="x", pady=(0, 15))
 
-        btn_salvar = tk.Button(lado_esquerdo, text="Adicionar Professor", command=self.adicionar_professor, bg="#4CAF50", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), height=2)
+        btn_salvar = tk.Button(lado_esquerdo, text="Adicionar Professor", command=self.adicionar_professor, bg="#B06C4B", fg="white", relief=tk.FLAT, font=("Segoe UI", 11, "bold"), height=2)
         btn_salvar.pack(fill="x")
 
         #LADO DIREITO
-        lado_direito = tk.LabelFrame(container_divisao, text="Professores cadastrados ", font=("Arial", 12, "bold"), bg="#FFFFFF", padx=20, pady=20)
+        lado_direito = tk.LabelFrame(container_divisao, text="Professores cadastrados ", font=("Segoe UI", 12, "bold"), bg="#E6CCB6", padx=20, pady=20)
         lado_direito.grid(row=0, column=1, sticky="nsew", padx=(20, 0))
 
         colunas = ("id", "nome", "matricula", "email")
@@ -236,9 +237,9 @@ class TelaCadastroProfessores(tk.Frame):  #classe 5
         self.tabela.pack(fill="both", expand=True)
 
         for professor in self.master.dados_professores:
-            self.tabela.insert("", "end", values=(professor["id"], professor["nome"], professor["matricula"], professor["email"])) # 👉 CORREÇÃO: "professor" com 'r'
+            self.tabela.insert("", "end", values=(professor["id"], professor["nome"], professor["matricula"], professor["email"]))
 
-        btn_voltar = tk.Button(self, text="← Voltar ao Menu Principal", font=("Arial", 11), command=master.mostrar_menu, bg="#757575", fg="white", relief=tk.FLAT, width=25, height=1)
+        btn_voltar = tk.Button(self, text="← Voltar ao Menu Principal", font=("Segoe UI", 11), command=master.mostrar_menu, bg="#D2A27F", fg="white", relief=tk.FLAT, width=25, height=1)
         btn_voltar.pack(pady=25)
 
     def adicionar_professor(self):
@@ -262,38 +263,38 @@ class TelaCadastroProfessores(tk.Frame):  #classe 5
 
 class TelaSorteio(tk.Frame):  #classe 6
     def __init__(self, master):
-        super().__init__(master, bg="#FFFFFF")
+        super().__init__(master, bg="#E6CCB6")
         self.master = master
 
-        tk.Label(self, text="Sorteador de Turmas", font=("Arial", 16, "bold"), bg="#FFFFFF").pack(pady=15)
+        tk.Label(self, text="Sorteador de Turmas", font=("Segoe UI", 16, "bold"), bg="#E6CCB6").pack(pady=15)
 
-        frame_config = tk.Frame(self, bg="#FFFFFF")
+        frame_config = tk.Frame(self, bg="#E6CCB6")
         frame_config.pack(pady=10, padx=20, fill="x")
         #pady espaço vertical, padx horizontal e fill eh pro componente de esticar
         frame_config.columnconfigure(0, weight=1) #numero da coluna, o quanto ela pode crescer
         frame_config.columnconfigure(1, weight=1)
         frame_config.columnconfigure(2, weight=1)
 
-        bloco_serie = tk.Frame(frame_config, bg="#FFFFFF")
+        bloco_serie = tk.Frame(frame_config, bg="#E6CCB6")
         bloco_serie.grid(row=0, column=0, sticky="n", padx=10)
         
-        tk.Label(bloco_serie, text="1. Escolha a Série:", font=("Arial", 10, "bold"), bg="#FFFFFF").pack(anchor="w", pady=2)
+        tk.Label(bloco_serie, text="1. Escolha a Série:", font=("Segoe UI", 10, "bold"), bg="#E6CCB6").pack(anchor="w", pady=2)
         self.cb_serie_sorteio = ttk.Combobox(bloco_serie, values=self.master.series_predefinidas, state="readonly", width=15)
         self.cb_serie_sorteio.pack(fill="x", pady=5)
         self.cb_serie_sorteio.current(0)
 
-        tk.Label(bloco_serie, text="2. Dividir em quantas turmas?", font=("Arial", 10, "bold"), bg="#FFFFFF").pack(anchor="w", pady=(15, 2))
-        self.txt_qtd_turmas = tk.Entry(bloco_serie, width=5, font=("Arial", 10))
+        tk.Label(bloco_serie, text="2. Dividir em quantas turmas?", font=("Segoe UI", 10, "bold"), bg="#E6CCB6").pack(anchor="w", pady=(15, 2))
+        self.txt_qtd_turmas = tk.Entry(bloco_serie, width=5, font=("Segoe UI", 10))
         self.txt_qtd_turmas.insert(0, "2") 
         self.txt_qtd_turmas.pack(anchor="w", pady=5)
 
-        bloco_prof = tk.Frame(frame_config, bg="#FFFFFF")
+        bloco_prof = tk.Frame(frame_config, bg="#E6CCB6")
         bloco_prof.grid(row=0, column=1, sticky="n", padx=10)
         
-        tk.Label(bloco_prof, text="3. Selecione os Professores:", font=("Arial", 10, "bold"), bg="#FFFFFF").pack(anchor="w", pady=2)
+        tk.Label(bloco_prof, text="3. Selecione os Professores:", font=("Segoe UI", 10, "bold"), bg="#E6CCB6").pack(anchor="w", pady=2)
         
         #listbox criaos selecionaveis
-        self.listbox_professores = tk.Listbox(bloco_prof, selectmode="multiple", height=5, width=30, font=("Arial", 10))
+        self.listbox_professores = tk.Listbox(bloco_prof, selectmode="multiple", height=5, width=30, font=("Segoe UI", 10))
         self.listbox_professores.pack(side="left", fill="both", expand=True)
         
         #scrollbar cria a rolagem
@@ -309,16 +310,16 @@ class TelaSorteio(tk.Frame):  #classe 6
             for nome in nomes_professores:
                 self.listbox_professores.insert(tk.END, nome)
 
-        bloco_botao = tk.Frame(frame_config, bg="#FFFFFF")
+        bloco_botao = tk.Frame(frame_config, bg="#E6CCB6")
         bloco_botao.grid(row=0, column=2, padx=10)
         
-        btn_sortear = tk.Button(bloco_botao, text="Realizar Sorteio", command=self.realizar_sorteio, bg="#FF9800", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), padx=10, pady=5)
+        btn_sortear = tk.Button(bloco_botao, text="Realizar Sorteio", command=self.realizar_sorteio, bg="#B06C4B", fg="white", relief=tk.FLAT, font=("Segoe UI", 11, "bold"), padx=10, pady=5)
         btn_sortear.pack()
 
-        self.txt_resultado = tk.Text(self, width=60, height=15, font=("Arial", 11), relief=tk.SOLID, borderwidth=1)
+        self.txt_resultado = tk.Text(self, width=60, height=15, font=("Segoe UI", 11), relief=tk.SOLID, borderwidth=1)
         self.txt_resultado.pack(pady=15, padx=20, fill="both", expand=True)
 
-        btn_voltar = tk.Button(self, text="← Voltar ao Menu", font=("Arial", 10), command=master.mostrar_menu, bg="#757575", fg="white", relief=tk.FLAT)
+        btn_voltar = tk.Button(self, text="← Voltar ao Menu", font=("Segoe UI", 10), command=master.mostrar_menu, bg="#D2A27F", fg="white", relief=tk.FLAT)
         btn_voltar.pack(pady=10)
 
     def realizar_sorteio(self):
@@ -384,12 +385,12 @@ class TelaSorteio(tk.Frame):  #classe 6
 
 class TelaTurmas(tk.Frame):  #classe 7
     def __init__(self, master):
-        super().__init__(master, bg="#FFFFFF")
+        super().__init__(master, bg="#E6CCB6")
         self.master = master
 
-        tk.Label(self, text= "Turmas", font=("Arial", 18, "bold"), bg="#FFFFFF").pack(pady=20)
+        tk.Label(self, text= "Turmas", font=("Segoe UI", 18, "bold"), bg="#E6CCB6").pack(pady=20)
 
-        txt = tk.Text(self, font=("Arial", 11))
+        txt = tk.Text(self, font=("Segoe UI", 11))
         txt.pack(fill="both", expand=True, padx=20, pady=20)
     
         if not master.dados_turmas:
@@ -406,7 +407,7 @@ class TelaTurmas(tk.Frame):  #classe 7
 
                 txt.insert(tk.END, "\n" + "-"*40 + "\n\n")
 
-        btn_voltar = tk.Button(self, text="← Voltar", command=master.mostrar_menu)
+        btn_voltar = tk.Button(self, text="← Voltar ao Menu", font=("Segoe UI", 10), command=master.mostrar_menu, bg="#D2A27F", fg="white", relief=tk.FLAT)
         btn_voltar.pack(pady=10)
 
 if __name__ == "__main__":
