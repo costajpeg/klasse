@@ -1,15 +1,54 @@
 import random
 import os
-import tkinter as tk
-from tkinter import ttk
-from tkinter import messagebox
+import tkinter as tk #biblioteca pra fazer a interface
+from tkinter import ttk #biblioteca pra fazer a interface, mas eh "Themed", cheia de modernices
+from tkinter import messagebox #para mensagens e alertas
+from abc import ABC, abstractmethod #biblioteca abstrata
 
-class BotaoPersonalizado(tk.Button):
+class Pessoa(ABC): #classe abstrata pois herda ABC
+    def __init__(self, nome):
+        self.__nome = nome #atributo privado
+
+    @abstractmethod
+    def mostrar_dados(self):
+        pass
+
+    def get_nome(self):
+        return self.__nome #atributo privado
+
+    def __validar_nome(self):  #método privado
+        return len(self.__nome) > 0
+
+class Aluno(Pessoa): #classe com herança
+    def __init__(self, nome, serie):
+        super().__init__(nome)
+        self.serie = serie
+
+    def mostrar_dados(self, extra=None): #polimorfismo mesmo metodo parametros diferentes
+    #simula sobrecarga usando parametro opcional
+        if extra: #verifica se foi passada uma informação "extra"
+            return f"Aluno: {self.get_nome()} | Série: {self.serie} | {extra}"
+        return f"Aluno: {self.get_nome()} | Série: {self.serie}"
+    
+class Professor(Pessoa): #classe com herança
+    def __init__(self, nome, matricula):
+        super().__init__(nome)
+        self.matricula = matricula
+
+    def mostrar_dados(self, extra=None): #polimorfismo mesmo metodo parametros diferentes
+    #simula sobrecarga usando parametro opcional
+        if extra: #verifica se foi passada uma informação "extra"
+            return f"Professor: {self.get_nome()} | Matrícula: {self.matricula} | {extra}"
+        return f"Professor: {self.get_nome()} | Matrícula: {self.matricula}"
+
+class BotaoPersonalizado(tk.Button): #classe 1
     def __init__(self, master=None, **kwargs):
         super().__init__(master, **kwargs)
         self.config(font=("Arial", 12, "bold"), bg="#2196F3", fg="white", relief=tk.GROOVE, activebackground="#1976D2", activeforeground="white", height=1, width=20)
 
-class TelaBase(tk.Frame):
+class TelaBase(tk.Frame): #classe 2
+#usamos tk.Frame para as telas, pois ele deixa com q agrupamos botoes, tabelas, textos, em uma msm janela
+#tk.Frame eh tipo uma "caixinha"/container
     def __init__(self, master, titulo_texto, **kwargs):
         super().__init__(master, bg="#FFFFFF", **kwargs)
         label = tk.Label(self, text=titulo_texto, font=("Arial", 18, "bold"), bg="#FFFFFF")
@@ -18,10 +57,10 @@ class TelaBase(tk.Frame):
                                command=master.mostrar_menu, bg="#757575", fg="white", relief=tk.FLAT)
         btn_voltar.pack(pady=10)
 
-class Aplicativo(tk.Tk):
+class Aplicativo(tk.Tk): #classe 3 tk.Tk eh a janela principal
     def __init__(self):
         super().__init__()
-        self.title("Gerenciador Escolar")
+        self.title("KLASSE")
         self.geometry("1000x700")
         self.configure(bg="#F5F5F5")
         
@@ -76,9 +115,8 @@ class Aplicativo(tk.Tk):
             
         self.tela_atual.pack(fill="both", expand=True)
 
-#TELA 1
-class TelaCadastroAlunos(tk.Frame):
-    def __init__(self, master):
+class TelaCadastroAlunos(tk.Frame):  #classe 4
+    def __init__(self, master): #master eh a janela principal
         super().__init__(master, bg="#FFFFFF")
         self.master = master
         
@@ -94,8 +132,8 @@ class TelaCadastroAlunos(tk.Frame):
 
         #LADO ESQUERDO
         lado_esquerdo = tk.LabelFrame(container_divisao, text=" Novo Cadastro ", font=("Arial", 12, "bold"), bg="#FFFFFF", padx=20, pady=20)
-        lado_esquerdo.grid(row=0, column=0, sticky="nsew", padx=(0, 20)) # Margem apenas na direita para separar as metades
-
+        lado_esquerdo.grid(row=0, column=0, sticky="nsew", padx=(0, 20)) #margem apenas na direita para separar as metades
+        #sticky define para qual direçao o componente ficara alinhado (north south east west)
         tk.Label(lado_esquerdo, text="Nome do Aluno:", bg="#FFFFFF", font=("Arial", 11)).pack(anchor="w", pady=(10, 2))
         self.txt_nome = tk.Entry(lado_esquerdo, font=("Arial", 11), width=35)
         self.txt_nome.pack(fill="x", pady=(0, 15))
@@ -113,7 +151,7 @@ class TelaCadastroAlunos(tk.Frame):
         lado_direito.grid(row=0, column=1, sticky="nsew", padx=(20, 0))
 
         colunas = ("id", "nome", "serie")
-        self.tabela = ttk.Treeview(lado_direito, columns=colunas, show="headings")
+        self.tabela = ttk.Treeview(lado_direito, columns=colunas, show="headings") #tabelas
         self.tabela.heading("id", text="ID")
         self.tabela.heading("nome", text="Nome do Aluno")
         self.tabela.heading("serie", text="Série")
@@ -139,20 +177,20 @@ class TelaCadastroAlunos(tk.Frame):
             novo_id = len(self.master.dados_alunos) + 1
             self.master.dados_alunos.append({"id": novo_id, "nome": nome, "serie": serie})
             self.tabela.insert("", "end", values=(novo_id, nome, serie))
-            self.txt_nome.delete(0, tk.END)
+            self.txt_nome.delete(0, tk.END) 
         else:
             messagebox.showwarning("Aviso", "Por favor, digite o nome do aluno.")
 
-#TELA 2
-class TelaCadastroProfessores(tk.Frame):
+class TelaCadastroProfessores(tk.Frame):  #classe 5
     def __init__(self, master):
         super().__init__(master, bg="#FFFFFF")
         self.master = master
         
         lbl_titulo = tk.Label(self, text="Painel de Cadastro de Professores", font=("Arial", 18, "bold"), bg="#FFFFFF")
+        #cria textos
         lbl_titulo.pack(pady=20)
 
-        container_divisao = tk.Frame(self, bg="#FFFFFF")
+        container_divisao = tk.Frame(self, bg="#FFFFFF") #fazer a divisao de colunas
         container_divisao.pack(fill="both", expand=True, padx=40)
 
         container_divisao.columnconfigure(0, weight=1)
@@ -172,7 +210,7 @@ class TelaCadastroProfessores(tk.Frame):
         self.txt_matricula.pack(fill="x", pady=(0, 15))
 
         tk.Label(lado_esquerdo, text="E-mail:", bg="#FFFFFF", font=("Arial", 11)).pack(anchor="w", pady=(10, 2))
-        self.txt_email = tk.Entry(lado_esquerdo, font=("Arial", 11), width=35) # 👉 CORREÇÃO: Nome corrigido
+        self.txt_email = tk.Entry(lado_esquerdo, font=("Arial", 11), width=35)
         self.txt_email.pack(fill="x", pady=(0, 15))
 
         btn_salvar = tk.Button(lado_esquerdo, text="Adicionar Professor", command=self.adicionar_professor, bg="#4CAF50", fg="white", relief=tk.FLAT, font=("Arial", 11, "bold"), height=2)
@@ -203,7 +241,7 @@ class TelaCadastroProfessores(tk.Frame):
         btn_voltar.pack(pady=25)
 
     def adicionar_professor(self):
-        nome = self.txt_nome.get().strip()
+        nome = self.txt_nome.get().strip() #get pega o texto digitado e strip remove espaços extras do começo e fim
         matricula = self.txt_matricula.get().strip()
         email = self.txt_email.get().strip()
 
@@ -221,9 +259,7 @@ class TelaCadastroProfessores(tk.Frame):
         else:
             messagebox.showwarning("Aviso", "Por favor, preencha todos os campos do professor.")
 
-
-#TELA 3
-class TelaSorteio(tk.Frame):
+class TelaSorteio(tk.Frame):  #classe 6
     def __init__(self, master):
         super().__init__(master, bg="#FFFFFF")
         self.master = master
@@ -232,8 +268,8 @@ class TelaSorteio(tk.Frame):
 
         frame_config = tk.Frame(self, bg="#FFFFFF")
         frame_config.pack(pady=10, padx=20, fill="x")
-        
-        frame_config.columnconfigure(0, weight=1)
+        #pady espaço vertical, padx horizontal e fill eh pro componente de esticar
+        frame_config.columnconfigure(0, weight=1) #numero da coluna, o quanto ela pode crescer
         frame_config.columnconfigure(1, weight=1)
         frame_config.columnconfigure(2, weight=1)
 
@@ -255,9 +291,11 @@ class TelaSorteio(tk.Frame):
         
         tk.Label(bloco_prof, text="3. Selecione os Professores:", font=("Arial", 10, "bold"), bg="#FFFFFF").pack(anchor="w", pady=2)
         
+        #listbox criaos selecionaveis
         self.listbox_professores = tk.Listbox(bloco_prof, selectmode="multiple", height=5, width=30, font=("Arial", 10))
         self.listbox_professores.pack(side="left", fill="both", expand=True)
         
+        #scrollbar cria a rolagem
         scrollbar = tk.Scrollbar(bloco_prof, orient="vertical", command=self.listbox_professores.yview)
         scrollbar.pack(side="right", fill="y")
         self.listbox_professores.config(yscrollcommand=scrollbar.set)
@@ -318,8 +356,8 @@ class TelaSorteio(tk.Frame):
             turmas_resultado[indice_turma].append(aluno)
 
         self.txt_resultado.delete("1.0", tk.END)
-        self.txt_resultado.insert(tk.END, f"--- RESULTADO DO SORTEIO DE TURMAS - {serie_alvo.upper()} ---\n")
-        self.txt_resultado.insert(tk.END, f"📊 Total de alunos na série: {len(alunos_filtrados)}\n")
+        self.txt_resultado.insert(tk.END, f"RESULTADO DO SORTEIO DE TURMAS {serie_alvo.upper()}\n")
+        self.txt_resultado.insert(tk.END, f"Total de alunos na série: {len(alunos_filtrados)}\n")
         self.txt_resultado.insert(tk.END, "\n" + "="*60 + "\n\n")
         
         letras_turmas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -331,7 +369,7 @@ class TelaSorteio(tk.Frame):
             
 
             self.txt_resultado.insert(tk.END, f"📌 {nome_turma} ({len(lista_alunos)} alunos)\n")
-            self.txt_resultado.insert(tk.END, f"👨‍🏫 Professor Regente: {prof_da_turma}\n")
+            self.txt_resultado.insert(tk.END, f"  Professor regente: {prof_da_turma}\n")
             self.txt_resultado.insert(tk.END, f"  Integrantes:\n")
             
             turma = {"nome": nome_turma, "serie": serie_alvo, "professor": prof_da_turma, "alunos": lista_alunos}
@@ -343,7 +381,7 @@ class TelaSorteio(tk.Frame):
                 self.txt_resultado.insert(tk.END, f"  - {aluno}\n")
             self.txt_resultado.insert(tk.END, "\n" + "-"*40 + "\n\n")
 
-class TelaTurmas(tk.Frame):
+class TelaTurmas(tk.Frame):  #classe 7
     def __init__(self, master):
         super().__init__(master, bg="#FFFFFF")
         self.master = master
@@ -371,5 +409,14 @@ class TelaTurmas(tk.Frame):
         btn_voltar.pack(pady=10)
 
 if __name__ == "__main__":
+    aluno_teste = Aluno("Alice", "5º Ano")
+    professor_teste = Professor("Antônio", "12345")
+
+    print(aluno_teste.mostrar_dados())
+    print(aluno_teste.mostrar_dados("Aluno destaque")) #chamada de método
+
+    print(professor_teste.mostrar_dados())
+    print(professor_teste.mostrar_dados("Professor homenageado")) #chamada de método
+
     app = Aplicativo()
-    app.mainloop()
+    app.mainloop() #janela aberta e executa a interface
