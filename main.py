@@ -78,9 +78,8 @@ FONTE_TITULO_PX = ("Courier", 18, "bold")
 FONTE_BTN       = ("Courier", 10, "bold")
 FONTE_LABEL     = ("Courier", 10)
 
-# ─────────────────────────────
 #  SISTEMA PADRÃO DE UI
-# ─────────────────────────────
+
 
 LARGURA_TELA = 1000
 ALTURA_TELA = 700
@@ -297,7 +296,8 @@ class Aplicativo(tk.Tk):
             anchor="nw"
         )
 
-        # ── QUADRO-NEGRO CENTRALIZADO ─────────────────────
+        #  QUADRO-NEGRO CENTRALIZADO
+        
         mw, mh = 600, 400          # largura e altura do quadro
         mx = (1000 - mw) // 2      # = 260  → centralizado
         my = 70
@@ -334,7 +334,7 @@ class Aplicativo(tk.Tk):
                     cv.create_rectangle(gx, gy, gx+3, gy+1,
                                        fill="#FFFFFF", outline="")
 
-        # ── Logo PNG real (logo_klasse.png) ─────────────────
+        #  Logo PNG real (logo_klasse.png) 
         cx = mx + mw // 2   # centro horizontal do quadro = 500
 
         _logo_path = os.path.join(
@@ -355,7 +355,7 @@ class Aplicativo(tk.Tk):
             cv.create_text(cx,   my+107, text="Klasse",
                            font=("Courier", 28, "bold"), fill=COR_TITULO)
 
-        # ── Botões: 2×2 grid + Sair central ─────────────────
+        #  Botões: 2×2 grid + Sair central 
         pares = [
             ("Turmas", "Turmas cadastradas"),
             ("Sortear Turmas", "Sorteio de Turmas"),
@@ -382,7 +382,7 @@ class Aplicativo(tk.Tk):
             cv.create_rectangle(gx, shelf_y+8, gx+gw, shelf_y+15, # tábuas da prateleira
                                fill="#F0EBE0", outline="") # tábuas da prateleira
 
-        # ── Rodapé de tijolos ──
+        # Rodapé de tijolos 
         self._desenhar_rodape_tijolos(self.tela_atual)
 
     def _btn_arredondado(self, master, texto, comando, sair=False):
@@ -420,7 +420,7 @@ class Aplicativo(tk.Tk):
         def px(x, y, w, h, c):
             canvas.create_rectangle(x, y, x+w, y+h, fill=c, outline="")
 
-        # ── Tampo (perspectiva, borda escura embaixo) ──
+        #  Tampo (perspectiva, borda escura embaixo) 
         px(20, 30,100, 6,"#C8943A")   # borda frontal escura
         px(16, 22,108,14,"#E8B84E")   # face superior clara
         px(18, 20, 90,10,"#D4A040")   # face superior média
@@ -435,7 +435,7 @@ class Aplicativo(tk.Tk):
         px(40, 10, 50, 6,"#D49040")
         px(44,  8, 34, 4,"#B07028")
 
-        # ── Estrutura metálica (barra horizontal) ──
+        #  Estrutura metálica (barra horizontal) 
         px(14, 34,112, 5,"#909090")   # barra metal principal
         px(16, 36,108, 2,"#B0B0B0")   # brilho metal
         px(14, 38, 20, 4,"#808080")   # detalhe esquerdo
@@ -443,7 +443,7 @@ class Aplicativo(tk.Tk):
         px(90, 38, 20, 4,"#808080")   # detalhe direito
         px(100,38,  4, 6,"#707070")
 
-        # ── Pernas ──
+        #  Pernas 
         # perna frontal esquerda
         px(18, 42, 8,50,"#9A6828")
         px(18, 88,14, 6,"#7A5020")    # pé
@@ -455,7 +455,7 @@ class Aplicativo(tk.Tk):
         # perna traseira direita
         px(106,35, 6,36,"#7A5020")
 
-        # ── Gaveta / detalhes ──
+        #  Gaveta / detalhes 
         px(40, 42,60, 2,"#B08040")    # linha gaveta
         px(65, 44, 8, 3,"#D4A040")    # puxador
         px(66, 44, 6, 2,"#F0C060")
@@ -525,7 +525,7 @@ class Aplicativo(tk.Tk):
                                        fill=COR_TIJOLO, outline=COR_TIJOLO_BORDA)
                 x += lw
 
-    # ── NAVEGAÇÃO ────────────────────────────
+    #  NAVEGAÇÃO 
     def mudar_tela(self, titulo_nova_tela): 
         if self.tela_atual:
             self.tela_atual.destroy()
@@ -771,7 +771,7 @@ class TelaSorteio(tk.Frame):
         self.master = master
         self._animando = False
 
-        # ── Canvas principal (parede) ──
+        #  Canvas principal (parede) 
         self.cv = tk.Canvas(self, width=1000, height=900, # altura do canvas é 560 para deixar espaço para rodapé de tijolos
                             bg=COR_PAREDE, highlightthickness=0)
         self.cv.pack(fill="x")
@@ -799,7 +799,7 @@ class TelaSorteio(tk.Frame):
         self.cv.create_text(500, 28, text="[ Sorteio de Turmas ]",
                             font=FONTE_TITULO_PX, fill=COR_TITULO)
 
-        # ─ PAINEL DE CONFIGURAÇÃO (esquerda) 
+        # PAINEL DE CONFIGURAÇÃO (esquerda) 
         self._montar_painel_config()
 
         #  QUADRO-NEGRO com resultado (centro-direita) 
