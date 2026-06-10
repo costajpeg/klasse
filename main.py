@@ -5,26 +5,26 @@ import threading
 import tkinter as tk 
 from tkinter import Image, ttk
 from tkinter import messagebox
-from abc import ABC, abstractmethod
-
+from abc import ABC, abstractmethod # obria a classe filha a criar o meodo mostrar_dados
+# ABC transforma a classe abstrata
 #  SISTEMA DE SOM
 
-import sys
+import sys # importa o modulo sys para identificar o sistema (linux....)
 
-_PASTA_SONS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "sounds") 
+_PASTA_SONS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "sounds")  # define o caminho da pasta 
 
-def _caminho_som(arquivo): #
+def _caminho_som(arquivo): # monta o caminho
     return os.path.join(_PASTA_SONS, arquivo)
 
-def tocar_som(arquivo: str):
+def tocar_som(arquivo: str): # responsavel por tocar um som
     """Toca um arquivo .wav em thread separada. Ex: tocar_som('click.wav')"""
-    def _play():
+    def _play():# executa a reproduçao do audio 
         try:
-            caminho = _caminho_som(arquivo)
-            if not os.path.isfile(caminho):
+            caminho = _caminho_som(arquivo) 
+            if not os.path.isfile(caminho): # se n exisiter encerra a funçao
                 return
-            if sys.platform == "win32":
-                import winsound
+            if sys.platform == "win32": # verifica se é windows
+                import winsound #importa a biblioteca nativa de sons 
                 winsound.PlaySound(caminho, winsound.SND_FILENAME | winsound.SND_ASYNC)
             else:
                 # Linux/Mac fallback com subprocess (aplay / afplay)
@@ -59,7 +59,7 @@ COR_TIJOLO       = "#D49050"   # tijolo claro
 COR_TIJOLO_BORDA = "#A05828"   # borda tijolo
 COR_TITULO       = "#D4A860"   # dourado (texto no quadro)
 # Botões arredondados dourado/bege 
-COR_BTN_BG       = "#C8903A"   # 
+COR_BTN_BG       = "#C8903A"   #
 COR_BTN_BORDA    = "#8A5810"   
 COR_BTN_TEXTO    = "#3A1A00"
 COR_BTN_HOVER    = "#E0A848"
@@ -92,20 +92,20 @@ PAINEL_TEXTO = COR_MOLDURA
 PAINEL_PADX = 20
 PAINEL_PADY = 20
 
-
+#Cria o painel 
 def criar_painel(master, titulo=None):
-    frame = tk.LabelFrame(
+    frame = tk.LabelFrame( 
         master,
         text=f" {titulo} " if titulo else "",
         font=FONTE_PIXEL,
         bg=PAINEL_BG,
-        fg=PAINEL_TEXTO,
-        bd=3,
-        relief=tk.RIDGE,
-        padx=PAINEL_PADX,
-        pady=PAINEL_PADY
+        fg=PAINEL_TEXTO,  # cor texto 
+        bd=3, # espessura da borda 
+        relief=tk.RIDGE, # estilo de borda 
+        padx=PAINEL_PADX, # espaçamento interno horizontal
+        pady=PAINEL_PADY  # espaçamento interno vertical
     )
-    return frame
+    return frame # retorna o painel criado 
 
 
 def criar_container_duplo(master):
@@ -1225,3 +1225,51 @@ if __name__ == "__main__": # ponto de entrada do programa, executado quando o sc
 
     app = Aplicativo()
     app.mainloop()
+
+
+#o klasse é um app em python  com tkinter para gerenciar alunos, prof,e turmas escolares. cadastrando dados, organizando turmas e realizando sorteio de alunos por turmas 
+
+#python: como ling. principal 
+#tkinter: para interface grafica 
+#pillow: (pil) para carregar imagens 
+#winsound: para efeitos sonoros 
+
+
+#o codigo esta dividido em
+
+#classes de dominio: pessoas do sistema
+#componentes reutilizaveis: botoes, cores e estilos
+#telas da aplicaçao: cada tela: cada tela é uma classe separada 
+
+
+#POO
+
+#aluno herda de pessoa entao reutiliza o atributo nome
+
+#mostrar_dados foi sobrescrito mostrando polimorfismo 
+#mesma ideiad do professor 
+
+
+#INTERFACE 
+
+#a tela herda de tk.frame 
+#o canvas é usado para desenhar o fundo da sala e posicionar os elementos
+
+#label: textos 
+#button: botao
+#treeview: tela de professores cadastradas 
+#entry: campos de texto
+
+
+#LOGICA DE CADASTRO 
+
+#o metodo le os valores digitados pelo uuario
+#usa strip() para remover espaços eextras
+#valida se todos os campos foraam preenchidos 
+#armazena o registro na lista dados_professores 
+
+#IMAGENS
+#sao carregadas com pillow e exdibida no canvas 
+
+#O CODIGO POSSUI UMA CLASSE ABSTRATA PESSOA (porque tanto Aluno quanto Professor possuem características em comum, como o nome e o método para exibir dados. Em vez de repetir código, coloquei essas características na classe Pessoa), DA QUAL HERDAM ALUNO E PROFESSOR. APLICANDO HERANÇA DE POLIMORFISMO . O SISTEMA É MODULAR 
+
