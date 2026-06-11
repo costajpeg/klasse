@@ -1,3 +1,5 @@
+#Alunos: Alice Juliani, Kayllaine Azevedo, Noah da Costa
+
 import random 
 import os
 import math
@@ -7,44 +9,6 @@ from tkinter import Image, ttk
 from tkinter import messagebox
 from abc import ABC, abstractmethod
 
-#  SISTEMA DE SOM
-
-import sys
-
-_PASTA_SONS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "sounds") 
-
-def _caminho_som(arquivo): #
-    return os.path.join(_PASTA_SONS, arquivo)
-
-def tocar_som(arquivo: str):
-    """Toca um arquivo .wav em thread separada. Ex: tocar_som('click.wav')"""
-    def _play():
-        try:
-            caminho = _caminho_som(arquivo)
-            if not os.path.isfile(caminho):
-                return
-            if sys.platform == "win32":
-                import winsound
-                winsound.PlaySound(caminho, winsound.SND_FILENAME | winsound.SND_ASYNC)
-            else:
-                # Linux/Mac fallback com subprocess (aplay / afplay)
-                import subprocess 
-                player = "afplay" if sys.platform == "darwin" else "aplay"
-                subprocess.Popen([player, caminho],
-                                 stdout=subprocess.DEVNULL,
-                                 stderr=subprocess.DEVNULL)
-        except Exception:
-            pass
-    threading.Thread(target=_play, daemon=True).start()
-
-
-# Nomes dos arquivos de som — ajuste se quiser outros nomes
-SOM_HOVER  = "hover.wav"
-SOM_CLICK  = "click.wav"
-SOM_SAIR   = "click.wav"
-SOM_VOLTAR = "click.wav"
-SOM_SALVAR = "success.wav"
-SOM_ERRO   = "error.wav"
 
 #  PALETA DE CORES 
 
@@ -171,12 +135,10 @@ def btn_pixel(master, texto, comando, sair=False):
     bd  = COR_BTN_SAIR_BD if sair else COR_BTN_BORDA
     fg  = COR_BTN_SAIR_FG if sair else COR_BTN_TEXTO
     hv  = COR_BTN_SAIR_HV if sair else COR_BTN_HOVER
-    som = SOM_SAIR         if sair else SOM_CLICK
 
     outer = tk.Frame(master, bg=bd, padx=3, pady=3)
 
     def _cmd():
-        tocar_som(som)
         outer.after(60, comando)
 
     btn = tk.Button(
@@ -187,7 +149,7 @@ def btn_pixel(master, texto, comando, sair=False):
         cursor="hand2", command=_cmd
     )
     btn.pack()
-    btn.bind("<Enter>", lambda e: (btn.config(bg=hv),  tocar_som(SOM_HOVER)))
+    btn.bind("<Enter>", lambda e: (btn.config(bg=hv)))
     btn.bind("<Leave>", lambda e:  btn.config(bg=bg))
     return outer
 
@@ -328,13 +290,13 @@ class Aplicativo(tk.Tk):
             image=self.quadro_img
         )
         # textura de giz
-        for gy in range(my+16, my+mh-8, 28):
+        '''for gy in range(my+16, my+mh-8, 28):
             for gx in range(mx+8, mx+mw-8, 6):
                 if (gx//6 + gy//6) % 5 == 0:
                     cv.create_rectangle(gx, gy, gx+3, gy+1,
-                                       fill="#FFFFFF", outline="")
+                                       fill="#FFFFFF", outline="")'''
 
-        # ── Logo PNG real (logo_klasse.png) ─────────────────
+        # Logo PNG real (logo_klasse.png)
         cx = mx + mw // 2   # centro horizontal do quadro = 500
 
         _logo_path = os.path.join(
@@ -347,7 +309,7 @@ class Aplicativo(tk.Tk):
             # mantém proporção, encaixa em 260x200 pixels (usa NEAREST para manter look pixel)
             _pil.thumbnail((258, 170), _PILImage.NEAREST) # redimensiona mantendo proporção
             self._logo_img = _ImageTk.PhotoImage(_pil)
-            cv.create_image(cx, my + 120, image=self._logo_img, anchor="center")
+            cv.create_image(cx, my + 160, image=self._logo_img, anchor="center")
         except Exception as _e:
             # fallback texto se PIL não estiver disponível
             cv.create_text(cx+3, my+110, text="Klasse",
@@ -386,18 +348,16 @@ class Aplicativo(tk.Tk):
         self._desenhar_rodape_tijolos(self.tela_atual)
 
     def _btn_arredondado(self, master, texto, comando, sair=False):
-        """Botão estilo pixel arredondado dourado com som 8-bit."""
+        """Botão estilo pixel arredondado dourado."""
         bg  = COR_BTN_SAIR    if sair else COR_BTN_BG
         fg  = COR_BTN_SAIR_FG if sair else COR_BTN_TEXTO
         hv  = COR_BTN_SAIR_HV if sair else COR_BTN_HOVER
-        som = SOM_SAIR         if sair else SOM_CLICK
 
         outer = tk.Frame(master,
                          bg=COR_BTN_SAIR_BD if sair else COR_BTN_BORDA,
                          padx=2, pady=2)
 
         def _cmd():
-            tocar_som(som)
             outer.after(60, comando)
 
         btn = tk.Button(
@@ -410,7 +370,7 @@ class Aplicativo(tk.Tk):
             command=_cmd
         )
         btn.pack()
-        btn.bind("<Enter>", lambda e: (btn.config(bg=hv), tocar_som(SOM_HOVER)))
+        btn.bind("<Enter>", lambda e: (btn.config(bg=hv)))
         btn.bind("<Leave>", lambda e:  btn.config(bg=bg))
         return outer
 
@@ -615,7 +575,7 @@ class TelaCadastroAlunos(tk.Frame):
                   activeforeground="white", relief=tk.FLAT, font=FONTE_BTN,
                   height=2, cursor="hand2")
         btn_add.pack(fill="x")
-        btn_add.bind("<Enter>", lambda e: (btn_add.config(bg=COR_BTN_HOVER), tocar_som(SOM_HOVER)))
+        btn_add.bind("<Enter>", lambda e: (btn_add.config(bg=COR_BTN_HOVER)))
         btn_add.bind("<Leave>", lambda e:  btn_add.config(bg=COR_BTN_BG))
         self.txt_nome.bind("<Return>", lambda e: self.adicionar_aluno())
 
@@ -654,9 +614,7 @@ class TelaCadastroAlunos(tk.Frame):
             self.master.dados_alunos.append({"id": nid, "nome": nome, "serie": serie})
             self.tabela.insert("", "end", values=(nid, nome, serie))
             self.txt_nome.delete(0, tk.END)
-            tocar_som(SOM_SALVAR)
         else:
-            tocar_som(SOM_ERRO)
             messagebox.showwarning("Aviso", "Por favor, digite o nome do aluno.")
 
 
@@ -808,11 +766,9 @@ class TelaSorteio(tk.Frame):
 
         #  Botão Sortear e Voltar 
         def _sortear():
-            tocar_som(SOM_CLICK)
             self.after(80, self._iniciar_animacao)
 
         def _voltar():
-            tocar_som(SOM_VOLTAR)
             self.after(60, master.mostrar_menu)
 
         btn_sortear = tk.Button(
@@ -825,7 +781,7 @@ class TelaSorteio(tk.Frame):
             cursor="hand2",
             command=_sortear
         )
-        btn_sortear.bind("<Enter>", lambda e: (btn_sortear.config(bg=COR_BTN_HOVER), tocar_som(SOM_HOVER)))
+        btn_sortear.bind("<Enter>", lambda e: (btn_sortear.config(bg=COR_BTN_HOVER),))
         btn_sortear.bind("<Leave>", lambda e:  btn_sortear.config(bg=COR_BTN_BG))
         self.cv.create_window(200, 470, window=btn_sortear)
 
@@ -839,7 +795,7 @@ class TelaSorteio(tk.Frame):
             cursor="hand2",
             command=_voltar
         )
-        voltar.bind("<Enter>", lambda e: (voltar.config(bg=COR_BTN_SAIR_HV), tocar_som(SOM_HOVER)))
+        voltar.bind("<Enter>", lambda e: (voltar.config(bg=COR_BTN_SAIR_HV)))
         voltar.bind("<Leave>", lambda e:  voltar.config(bg=COR_BTN_SAIR))
         self.cv.create_window(90, 470, window=voltar)
 
@@ -1010,12 +966,11 @@ class TelaSorteio(tk.Frame):
         self._anim_total = 22
         self._animar_frame()
 
-    def _animar_frame(self): # mostra um nome aleatório e toca um som a cada frame, depois de alguns frames faz o sorteio real
+    def _animar_frame(self): # mostra um nome aleatório depois de alguns frames faz o sorteio real
         if self._anim_frame < self._anim_total:
             # mostra nome aleatório na animação
             nome_fake = random.choice(self._anim_nomes)
             self.cv.itemconfig(self.lbl_anim, text=f"> {nome_fake} <") # atualiza o texto do item lbl_anim no canvas para mostrar o nome aleatório
-            tocar_som([(random.choice([330,392,440,523]), 0.03)])
             self._anim_frame += 1
             delay = 60 + self._anim_frame * 8   # desacelera
             self.after(delay, self._animar_frame)
@@ -1024,7 +979,6 @@ class TelaSorteio(tk.Frame):
             self.cv.itemconfig(self.lbl_anim, text="")
             self._fazer_sorteio()
             self._animando = False
-            tocar_som(SOM_CLICK + [(1047, 0.15)])
 
     def _fazer_sorteio(self): # distribui os alunos sorteados em turmas e exibe o resultado
         alunos = self._anim_nomes[:]
