@@ -8,6 +8,7 @@ import tkinter as tk
 from tkinter import Image, ttk
 from tkinter import messagebox
 from abc import ABC, abstractmethod
+import json
 
 
 #  PALETA DE CORES 
@@ -205,12 +206,8 @@ class Aplicativo(tk.Tk):
 
         self.fundo_img = ImageTk.PhotoImage(img)
         
-        
-
-        self.dados_alunos     = []
-        self.dados_professores = []
-        self.dados_turmas     = []
-        self.tela_atual       = None
+        self.carregar_dados()
+        self.tela_atual = None
 
         self.mostrar_menu()
         
@@ -235,6 +232,32 @@ class Aplicativo(tk.Tk):
 
         return canvas
 
+
+    def salvar_dados(self):
+        dados = {
+        "alunos": self.dados_alunos,
+        "professores": self.dados_professores,
+        "turmas": self.dados_turmas
+    }
+
+        with open("dados.json", "w", encoding="utf-8") as arquivo:
+            json.dump(dados, arquivo, ensure_ascii=False, indent=4)
+
+
+    def carregar_dados(self):
+        try:
+            with open("dados.json", "r", encoding="utf-8") as arquivo:
+                dados = json.load(arquivo)
+
+            self.dados_alunos = dados.get("alunos", [])
+            self.dados_professores = dados.get("professores", [])
+            self.dados_turmas = dados.get("turmas", [])
+
+        except FileNotFoundError:
+            self.dados_alunos = []
+            self.dados_professores = []
+            self.dados_turmas = []
+        
     # ── MENU PRINCIPAL ────────────────────────
     def mostrar_menu(self):
         if self.tela_atual:
@@ -500,11 +523,8 @@ class Aplicativo(tk.Tk):
         self.tela_atual = cls(self) if cls else TelaBase(self, titulo_nova_tela)
         self.tela_atual.pack(fill="both", expand=True)
 
-def mostrar_professores(self):
-    self.limpar_tela()
-
-    tela = TelaCadastroProfessores(self)
-    tela.pack(fill="both", expand=True)
+    def mostrar_professores(self):
+        self.mudar_tela("Cadastro de Professores")
 
 #  TELA — CADASTRO DE ALUNOS
 class TelaCadastroAlunos(tk.Frame): 
@@ -612,6 +632,7 @@ class TelaCadastroAlunos(tk.Frame):
         if nome:
             nid = len(self.master.dados_alunos) + 1
             self.master.dados_alunos.append({"id": nid, "nome": nome, "serie": serie})
+            self.master.salvar_dados()
             self.tabela.insert("", "end", values=(nid, nome, serie))
             self.txt_nome.delete(0, tk.END)
         else:
@@ -712,7 +733,7 @@ class TelaCadastroProfessores(tk.Frame):
             novo_id = len(self.master.dados_professores) + 1 
             
             self.master.dados_professores.append({"id": novo_id, "nome": nome, "matricula": matricula, "email": email})
-            
+            self.master.salvar_dados()
             self.tabela.insert("", "end", values=(novo_id, nome, matricula, email))
             
 
@@ -1008,7 +1029,8 @@ class TelaSorteio(tk.Frame):
             for a in lista:
                 linhas.append(f"   - {a}\n")
             linhas.append("\n")
-
+        self.master.salvar_dados()
+        
         self.txt_resultado.config(state="normal") # habilita edição temporariamente para atualizar o texto
         self.txt_resultado.delete("1.0", tk.END)  # limpa o conteúdo anterior
         for l in linhas:
